@@ -36,14 +36,14 @@ public:
     }
 
     typename attribute_type::const_range attributes() const
-	{
+    {
         return typename attribute_type::const_range(m_attributes.cbegin(), m_attributes.cend());
-	}
+    }
 
-	typename attribute_type::range attributes()
-	{
-		return typename attribute_type::range(m_attributes.begin(), m_attributes.end());
-	}
+    typename attribute_type::range attributes()
+    {
+        return typename attribute_type::range(m_attributes.begin(), m_attributes.end());
+    }
 
     string_type attribute(string_type const& n) const
     {

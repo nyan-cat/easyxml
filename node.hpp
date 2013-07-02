@@ -14,29 +14,29 @@ class basic_node
 {
 public:
 
-	typedef T char_type;
+    typedef T char_type;
     typedef std::basic_string<char_type> string_type;
     typedef std::basic_ostream<char_type> ostream_type;
-	typedef std::shared_ptr<basic_node> pointer_type;
-	typedef std::vector<pointer_type> container_type;
-	typedef typename container_type::iterator iterator;
-	typedef typename container_type::const_iterator const_iterator;
+    typedef std::shared_ptr<basic_node> pointer_type;
+    typedef std::vector<pointer_type> container_type;
+    typedef typename container_type::iterator iterator;
+    typedef typename container_type::const_iterator const_iterator;
     typedef basic_entity<char_type> entity_type;
 
-	template <typename I>
-	class basic_range
-	{
-	public:
+    template <typename I>
+    class basic_range
+    {
+    public:
 
-		typedef I iterator_type;
+        typedef I iterator_type;
 
-		basic_range(iterator_type first, iterator_type second)
-		: first(first)
+        basic_range(iterator_type first, iterator_type second)
+        : first(first)
         , second(second)
         {
         }
 
-		iterator_type begin() const
+        iterator_type begin() const
         {
             return first;
         }
@@ -46,14 +46,14 @@ public:
             return second;
         }
 
-	private:
+    private:
 
-		iterator_type first;
-		iterator_type second;
-	};
+        iterator_type first;
+        iterator_type second;
+    };
 
-	typedef basic_range<iterator> range;
-	typedef basic_range<const_iterator> const_range;
+    typedef basic_range<iterator> range;
+    typedef basic_range<const_iterator> const_range;
 
     basic_node(string_type const& n, string_type const& v)
     : m_name(n)
@@ -62,9 +62,9 @@ public:
 
     }
 
-	virtual ~basic_node()
-	{
-	}
+    virtual ~basic_node()
+    {
+    }
 
     virtual ostream_type& output(ostream_type& stream) const = 0;
 
@@ -94,15 +94,15 @@ public:
         m_value = str;
     }
 
-	const_range children() const
-	{
+    const_range children() const
+    {
         return const_range(m_children.cbegin(), m_children.cend());
-	}
+    }
 
-	range children()
-	{
-		return range(m_children.begin(), m_children.end());
-	}
+    range children()
+    {
+        return range(m_children.begin(), m_children.end());
+    }
 
     void append(pointer_type n)
     {
@@ -113,7 +113,7 @@ private:
 
     string_type m_name;
     string_type m_value;
-	container_type m_children;
+    container_type m_children;
 };
 
 template <typename T>
