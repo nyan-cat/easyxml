@@ -53,6 +53,33 @@ public:
     typedef basic_range<iterator> range;
     typedef basic_range<const_iterator> const_range;
 
+    class set
+    {
+    public:
+
+        typedef std::vector<pointer_type> container_type;
+        typedef typename container_type::const_iterator iterator;
+
+        iterator begin() const
+        {
+            return nodeset.cbegin();
+        }
+
+        iterator end() const
+        {
+            return nodeset.cend();
+        }
+
+        void append(pointer_type ptr)
+        {
+            nodeset.push_back(ptr);
+        }
+
+    private:
+
+        container_type nodeset;
+    };
+
     basic_node(string_type const& n, string_type const& v)
     : m_name(n)
     , m_value(v)

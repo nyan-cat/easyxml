@@ -79,6 +79,11 @@ public:
         return m_root;
     }
 
+    typename node_type::set query(string_type const& expression)
+    {
+        return typename node_type::set(); // TODO: implement XPath-request ^_^
+    }
+
 private:
 
     string_type m_version;
