@@ -1,47 +1,45 @@
 #if !defined (XML_ENTITY_HPP)
 #define XML_ENTITY_HPP
 
+#include <boost/format.hpp>
+#include "node.hpp"
+
 namespace xml
 {
 
 template <typename T>
-class basic_entity
+class basic_entity : public basic_node<T>
 {
 public:
 
-    typedef T char_type;
-    typedef char_type const* const string_type;
+    typedef typename basic_node::string_type string_type;
+    typedef typename basic_node::ostream_type ostream_type;
+    typedef std::shared_ptr<basic_comment> pointer_type;
+    typedef boost::basic_format<char_type> format_type;
 
-    static string_type amp;
-    static string_type quot;
-    static string_type lt;
-    static string_type gt;
-    static string_type slash;
-    static string_type equal;
-    static string_type question;
-    static string_type whitespace;
-    static string_type xml;
+    struct format
+    {
+        static format_type const entity;
+    };
+
+    basic_entity(string_type const& code)
+    : basic_node(string_type(), code)
+    {
+    }
+
+    virtual typename basic_node::pointer_type copy() const
+    {
+        return std::make_shared<basic_entity>(*this);
+    }
+
+    virtual ostream_type& serialize(ostream_type& stream) const
+    {
+        return stream << format_type(format::entity) % value();
+    }
 };
 
-basic_entity<char>::string_type basic_entity<char>::amp = "&";
-basic_entity<char>::string_type basic_entity<char>::quot = "\"";
-basic_entity<char>::string_type basic_entity<char>::lt = "<";
-basic_entity<char>::string_type basic_entity<char>::gt = ">";
-basic_entity<char>::string_type basic_entity<char>::slash = "/";
-basic_entity<char>::string_type basic_entity<char>::equal = "=";
-basic_entity<char>::string_type basic_entity<char>::question = "?";
-basic_entity<char>::string_type basic_entity<char>::whitespace = " ";
-basic_entity<char>::string_type basic_entity<char>::xml = "xml";
-
-basic_entity<wchar_t>::string_type basic_entity<wchar_t>::amp = L"&";
-basic_entity<wchar_t>::string_type basic_entity<wchar_t>::quot = L"\"";
-basic_entity<wchar_t>::string_type basic_entity<wchar_t>::lt = L"<";
-basic_entity<wchar_t>::string_type basic_entity<wchar_t>::gt = L">";
-basic_entity<wchar_t>::string_type basic_entity<wchar_t>::slash = L"/";
-basic_entity<wchar_t>::string_type basic_entity<wchar_t>::equal = L"=";
-basic_entity<wchar_t>::string_type basic_entity<wchar_t>::question = L"?";
-basic_entity<wchar_t>::string_type basic_entity<wchar_t>::whitespace = L" ";
-basic_entity<wchar_t>::string_type basic_entity<wchar_t>::xml = L"xml";
+basic_entity<char>   ::format_type const basic_entity<char>   ::format::entity = boost::format ( "&#%1%;");
+basic_entity<wchar_t>::format_type const basic_entity<wchar_t>::format::entity = boost::wformat(L"&#%1%;");
 
 } // namespace xml
 

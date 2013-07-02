@@ -4,7 +4,6 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include "entity.hpp"
 
 namespace xml
 {
@@ -21,7 +20,6 @@ public:
     typedef std::vector<pointer_type> container_type;
     typedef typename container_type::iterator iterator;
     typedef typename container_type::const_iterator const_iterator;
-    typedef basic_entity<char_type> entity_type;
 
     template <typename I>
     class basic_range
@@ -62,11 +60,39 @@ public:
 
     }
 
+    basic_node(basic_node const& other)
+    : m_name(other.m_name)
+    , m_value(other.m_value)
+    {
+    }
+
     virtual ~basic_node()
     {
     }
 
-    virtual ostream_type& output(ostream_type& stream) const = 0;
+    virtual ostream_type& serialize(ostream_type& stream) const
+    {
+        for(auto child : m_children)
+        {
+            stream << *child;
+        }
+        return stream;
+    }
+
+    pointer_type clone() const
+    {
+        auto result = copy();
+        for(auto child : m_children)
+        {
+            result->m_children.push_back(child->clone());
+        }
+        return result;
+    }
+
+    virtual pointer_type copy() const
+    {
+        return std::make_shared<basic_node>(*this);
+    }
 
     template <typename N>
     bool is() const
@@ -119,7 +145,7 @@ private:
 template <typename T>
 std::basic_ostream<T>& operator << (std::basic_ostream<T>& stream, basic_node<T> const& n)
 {
-    return n.output(stream);
+    return n.serialize(stream);
 }
 
 } // namespace xml
