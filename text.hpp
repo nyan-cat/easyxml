@@ -25,7 +25,7 @@ public:
         return std::make_shared<basic_text>(*this);
     }
 
-    virtual ostream_type& output(ostream_type& stream) const
+    virtual ostream_type& serialize(ostream_type& stream) const
     {
         return stream << value();
     }
