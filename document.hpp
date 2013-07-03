@@ -5,6 +5,8 @@
 #include "cdata.hpp"
 #include "comment.hpp"
 #include "element.hpp"
+#include "notation.hpp"
+#include "processing_instruction.hpp"
 #include "text.hpp"
 
 namespace xml
@@ -23,11 +25,15 @@ public:
     typedef basic_cdata<char_type> cdata_type;
     typedef basic_comment<char_type> comment_type;
     typedef basic_element<char_type> element_type;
+    typedef basic_notation<char_type> notation_type;
+    typedef basic_processing_instruction<char_type> processing_instruction_type;
     typedef basic_text<char_type> text_type;
 
     typedef typename cdata_type::pointer_type cdata_ptr;
     typedef typename comment_type::pointer_type comment_ptr;
     typedef typename element_type::pointer_type element_ptr;
+    typedef typename notation_type::pointer_type notation_ptr;
+    typedef typename processing_instruction_type::pointer_type processing_instruction_ptr;
     typedef typename text_type::pointer_type text_ptr;
 
     typedef boost::basic_format<char_type> format_type;
@@ -67,6 +73,16 @@ public:
     element_ptr element(string_type const& name, string_type const& value = string_type()) const
     {
         return std::make_shared<element_type>(name, value);
+    }
+
+    notation_ptr notation(string_type const& n, string_type const& p, string_type const& s) const
+    {
+        return std::make_shared<notation_type>(n, p, s);
+    }
+
+    processing_instruction_ptr processing_instruction(string_type const& n, string_type const& v) const
+    {
+        return std::make_shared<processing_instruction_type>(n, v);
     }
 
     text_ptr text(string_type const& t) const
